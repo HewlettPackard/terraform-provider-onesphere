@@ -22,6 +22,7 @@ var (
 	serverHardwareURIs = make(map[string]bool)
 )
 
+// HPE OneSphere credentials for Terraform Provider to connect
 func Provider() terraform.ResourceProvider {
 	return &schema.Provider{
 		Schema: map[string]*schema.Schema{

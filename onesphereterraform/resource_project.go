@@ -13,8 +13,6 @@ package onesphereterraform
 
 import (
 	"strings"
-	"os"
-	"log"
 
 	onesphere "github.com/HewlettPackard/hpe-onesphere-go"
 	"github.com/hashicorp/terraform/helper/schema"
@@ -109,14 +107,7 @@ func resourceProjectRead(d *schema.ResourceData, meta interface{}) error {
 
 func resourceProjectUpdate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	f, err := os.OpenFile("testlogfile", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
-	if err != nil {
-		//t.Fatalf("error opening file: %v", err)
-	}
-	//defer f.Close()
-
-	log.SetOutput(f)
-
+	
 	rawTagUris := d.Get("taguris").(*schema.Set).List()
 	tagUris := make([]string, len(rawTagUris))
 	for i, raw := range rawTagUris {
@@ -128,9 +119,7 @@ func resourceProjectUpdate(d *schema.ResourceData, meta interface{}) error {
 		Description: d.Get("description").(string),
 		TagUris: tagUris,
 	}
-	log.Println("before UpdateProject call")
 	project, err := config.osClient.UpdateProject(d.Get("id").(string), newProj)
-	log.Println("After UpdateProject call")
 	if err != nil {
 		return err
 	}

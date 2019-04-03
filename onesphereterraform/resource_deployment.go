@@ -97,14 +97,7 @@ func resourceDeploymentExists(d *schema.ResourceData, meta interface{}) (b bool,
 	// Exists - This is called to verify a resource still exists. It is called prior to Read,
 	// and lowers the burden of Read to be able to assume the resource exists.
 	config := meta.(*Config)
-	f, err := os.OpenFile("testlogfile", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
-	if err != nil {
-		//t.Fatalf("error opening file: %v", err)
-	}
-	//defer f.Close()
-
-	log.SetOutput(f)
-	log.Println("exists resourceDeploymentExists")
+	
 	if _, err := config.osClient.GetDeploymentByID(d.Id()); err != nil {
 		if strings.Contains(err.Error(), "404 Not Found") {
 			return false, nil
@@ -127,18 +120,9 @@ func resourceDeploymentCreate(d *schema.ResourceData, meta interface{}) error {
 		err       error
 	)
 	osNetworkArray := []onesphere.DeploymentNetworks{}
-	f, err := os.OpenFile("testlogfile", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
-	if err != nil {
-		//t.Fatalf("error opening file: %v", err)
-	}
-	//defer f.Close()
-
-	log.SetOutput(f)
-
+	
 	if d.Get("servicename").(string) != "" {
-		//service, err = config.osClient.GetServiceByID(d.Get("serviceid").(string))
 		service, err = config.osClient.GetServiceByName(d.Get("servicename").(string))
-		log.Println("deployment service", service)
 		if err != nil {
 			//d.SetId("")
 			return err
@@ -147,24 +131,18 @@ func resourceDeploymentCreate(d *schema.ResourceData, meta interface{}) error {
 
 	if d.Get("zonename").(string) != "" {
 		zone, err = config.osClient.GetZoneByName(d.Get("zonename").(string))
-		log.Printf("deployment zone +%v", zone)
 		if err != nil {
 			//d.SetId("")
 			return err
 		}
 		if d.Get("networkname").(string) != "" {
 			network, err = config.osClient.GetNetworkByNameAndZoneURI(d.Get("networkname").(string), (zone.URI))
-			log.Println("network", network)
 			if err != nil {
 				//d.SetId("")
 				return err
 			}
-			//	for i := 0; i < 1; i++ {
 			n := onesphere.DeploymentNetworks{NetworkURI: network.URI}
 			osNetworkArray = append(osNetworkArray, n)
-			//osNetworkArray[i].NetworkURI = network.URI
-			//}
-			log.Println("osNetworkArray", osNetworkArray)
 		}
 	}
 

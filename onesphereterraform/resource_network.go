@@ -12,8 +12,6 @@
 package onesphereterraform
 
 import (
-	"log"
-	"os"
 	"strings"
 
 	onesphere "github.com/HewlettPackard/hpe-onesphere-go"
@@ -60,14 +58,7 @@ func resourceNetworkExists(d *schema.ResourceData, meta interface{}) (b bool, e 
 	// Exists - This is called to verify a resource still exists. It is called prior to Read,
 	// and lowers the burden of Read to be able to assume the resource exists.
 	config := meta.(*Config)
-	f, err := os.OpenFile("testlogfile", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
-	if err != nil {
-		//t.Fatalf("error opening file: %v", err)
-	}
-	defer f.Close()
-
-	log.SetOutput(f)
-	log.Println("Inside resourceNetworkExists")
+	
 	osNetwk, err := config.osClient.GetNetworkByID(d.Id())
 	if err != nil {
 		if strings.Contains(err.Error(), "404 Not Found") {
@@ -76,29 +67,19 @@ func resourceNetworkExists(d *schema.ResourceData, meta interface{}) (b bool, e 
 		return false, err
 	}
 	d.SetId(osNetwk.ID)
-	log.Println("Success Inside resourceNetworkExists", osNetwk.ID)
 	return true, nil
 }
 
 func resourceNetworkCreate(d *schema.ResourceData, meta interface{}) error {
 	//config := meta.(*Config)
-	f, err := os.OpenFile("testlogfile", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
-	if err != nil {
-		//t.Fatalf("error opening file: %v", err)
-	}
-	defer f.Close()
-
-	log.SetOutput(f)
-	log.Println("Inside resourceNetworkCreate")
+	
 	return nil
 }
 
 func resourceNetworkRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	log.Println("Inside resourceNetworkRead")
 	if d.Get("zonename") != "" {
 		osZone, err := config.osClient.GetZoneByName(d.Get("zonename").(string))
-		log.Println("After osZone resourceNetworkRead", osZone.URI)
 		if err != nil {
 			//d.SetId(osNetwork.ID)
 			return nil
@@ -106,15 +87,10 @@ func resourceNetworkRead(d *schema.ResourceData, meta interface{}) error {
 		if osZone.URI != "" && d.Get("networkname") != "" {
 			osNetwork, neterr := config.osClient.GetNetworkByNameAndZoneURI(d.Get("networkname").(string), (osZone.URI))
 			if neterr != nil {
-				log.Println("Errrrrrrrrrrrrrrrrrrr")
 				d.SetId("")
 				return nil
 			}
-			log.Println("GetNetworkByNameAndZoneURI", osNetwork.ID)
 			d.SetId(osNetwork.ID)
-
-			log.Println("After osNetwork resourceNetworkRead ", osNetwork.URI)
-
 		}
 	}
 	return nil
@@ -122,23 +98,14 @@ func resourceNetworkRead(d *schema.ResourceData, meta interface{}) error {
 
 func resourceNetworkUpdate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	f, err := os.OpenFile("testlogfile", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
-	if err != nil {
-		//t.Fatalf("error opening file: %v", err)
-	}
-	//defer f.Close()
-
-	log.SetOutput(f)
-	log.Println("Inside resourceNetworkUpdate")
-
+	
 	if d.Get("projectname") != "" {
 		osProj, osProjerr := config.osClient.GetProjectByName(d.Get("projectname").(string))
 		if osProjerr != nil {
 			d.SetId("")
 			return nil
 		}
-		log.Println("After osProj resourceNetworkUpdate", osProj.ID)
-
+	
 		/*if d.Get("regionname") != "" {
 			osRegion, osRegionerr := config.osClient.GetRegionByName(d.Get("regionname").(string))
 			if osRegionerr != nil {
@@ -153,19 +120,14 @@ func resourceNetworkUpdate(d *schema.ResourceData, meta interface{}) error {
 				d.SetId("")
 				return osZoneerr
 			}
-			log.Println("After osZone resourceNetworkUpdate", osZone.URI)
 			if osZone.URI != "" && d.Get("networkname") != "" {
-				log.Println("----before  osNetwork")
 				//osNetwork, osNetworkerr := config.osClient.GetNetworkByNameAndZoneURI(d.Get("networkname").(string), osZone.URI)
 				//osNetwork, osNetworkerr := config.osClient.GetNetworkByID(d.Id())
 				osNetwork, osNetworkerr := config.osClient.GetNetworkByNameAndZoneURI(d.Get("networkname").(string), osZone.URI)
-				log.Println("++++After osNetwork")
 				if osNetworkerr != nil {
-					log.Println("++++++++++++++++++++error after GetNetworkByNameAndZoneURI")
 					d.SetId("")
 					return osNetworkerr
 				}
-				log.Println("before network call")
 				//d.SetId(osNetwork.ID)
 				//osNetwork, err := config.osClient.GetNetworkByName(d.Get("networkname").(string))
 				osNet := []*onesphere.PatchOp{
@@ -180,8 +142,6 @@ func resourceNetworkUpdate(d *schema.ResourceData, meta interface{}) error {
 					return osNetError
 				}
 				d.SetId(osntwrk.ID)
-				log.Println("After osNetwork resourceNetworkUpdate", osntwrk.ID)
-
 			}
 		}
 	}
@@ -194,16 +154,7 @@ func resourceNetworkDelete(d *schema.ResourceData, meta interface{}) error {
 	return nil
 }
 func resourceNetworkImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	f, err := os.OpenFile("testlogfile", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
-	if err != nil {
-		//t.Fatalf("error opening file: %v", err)
-	}
-	defer f.Close()
-
-	log.SetOutput(f)
-	log.Println("Inside resourceNetworkImport")
 	if err := resourceNetworkRead(d, meta); err != nil {
-		log.Println("ERRRRRRRRRRRRRR Inside resourceNetworkImport")
 		return nil, err
 	}
 	return []*schema.ResourceData{d}, nil

@@ -12,7 +12,6 @@
 package onesphereterraform
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/hashicorp/terraform/helper/schema"
@@ -63,20 +62,17 @@ func resourceVMProfileExists(d *schema.ResourceData, meta interface{}) (b bool, 
 
 func resourceVMProfileCreate(d *schema.ResourceData, meta interface{}) error {
 	//config := meta.(*Config)
-	fmt.Println("Inside VM profile Create")
 	return resourceDeploymentRead(d, meta)
 }
 
 func resourceVMProfileRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	fmt.Println("Inside VM profile Read")
 	osVMProfileList, err := config.osClient.GetVirtualMachineProfiles(d.Get("name").(string))
 	if err != nil {
 		//d.SetId("")
 		return nil
 	}
 	d.Set("name", osVMProfileList.Name)
-	fmt.Println("retrieved Zone name  '%s'", osVMProfileList.Name)
 	return nil
 }
 
