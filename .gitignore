@@ -1,0 +1,17 @@
+bins/
+.terraform
+.vscode
+pkg
+src
+._.DS_Store
+.DS_Store
+crash.log
+error.txt
+main.tf
+fullmaintffile.txt
+terraform.tfstate
+terraform.tfstate.backup
+Terraformbuildplanapply.sh
+terraform-provider-onesphere.exe
+testlogfile
+vars.tf
