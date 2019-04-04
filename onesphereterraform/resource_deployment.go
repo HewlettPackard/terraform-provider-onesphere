@@ -17,7 +17,7 @@ import (
 	"strings"
 
 	onesphere "github.com/HewlettPackard/hpe-onesphere-go"
-	"github.com/HewlettPackard/hpe-onesphere-go/utils"
+	"github.com/HewlettPackard/hpe-onesphere-go/tree/feature/integrate-structs"
 	"github.com/hashicorp/terraform/helper/schema"
 )
 
