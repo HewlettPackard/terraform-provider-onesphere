@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"./onesphereterraform"
+	"github.com/HewlettPackard/HPE-OneSphere-Terraform-Provider/onesphereterraform"
 	"github.com/hashicorp/terraform/plugin"
 )
 
