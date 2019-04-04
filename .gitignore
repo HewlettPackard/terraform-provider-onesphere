@@ -8,10 +8,11 @@ src
 crash.log
 error.txt
 main.tf
+main.tf_bkp
+example.tf
 fullmaintffile.txt
 terraform.tfstate
 terraform.tfstate.backup
 Terraformbuildplanapply.sh
-terraform-provider-onesphere.exe
 testlogfile
 vars.tf
