@@ -1,20 +1,20 @@
-# HPE-OneSphere-Terraform-Provider
+# terraform-provider-onesphere
 
 A Terraform provider for HPE OneSphere
 
-## Installing `HPE-OneSphere-Terraform-Provider` with Go
+## Installing `terraform-provider-onesphere` with Go
 
 * Install Go 1.11. For previous versions, you may have to set your `$GOPATH` manually, if you haven't done it yet.
 * Install Terraform 0.9.x or above [from here](https://www.terraform.io/downloads.html) and save it into `/usr/local/bin/terraform` folder (create it if it doesn't exists)
 * Download the code by issuing a `go get` command.
 
 ```bash
-# Download the source code for HPE-OneSphere-Terraform-Provider
+# Download the source code for terraform-provider-onesphere
 # and build the needed binary, by saving it inside $GOPATH/bin
-$ go get -u github.com/HewlettPackard/HPE-OneSphere-Terraform-Provider
+$ go get -u github.com/HewlettPackard/terraform-provider-onesphere
 
 # Copy the binary to have it along the terraform binary
-$ mv $GOPATH/bin/HPE-OneSphere-Terraform-Provider /usr/local/bin/terraform
+$ mv $GOPATH/bin/terraform-provider-onesphere /usr/local/bin/terraform
 ```
 
 ## Example terraform file to provision a virtual machine

@@ -16,3 +16,4 @@ terraform.tfstate.backup
 Terraformbuildplanapply.sh
 testlogfile
 vars.tf
+terraform-provider-onesphere.exe
